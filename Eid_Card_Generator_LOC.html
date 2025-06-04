@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Eid Card Generator - LOC</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f9f9f9;
+            text-align: center;
+            padding: 30px;
+        }
+        #cardCanvas {
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+        input {
+            font-size: 18px;
+            padding: 8px;
+            width: 250px;
+        }
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌙 Eid Mubarak from LOC</h1>
+    <p>Type your name below to generate your personalized Eid card.</p>
+    <input type="text" id="nameInput" placeholder="Enter your name" />
+    <br>
+    <button onclick="generateCard()">Generate</button>
+    <br><br>
+    <canvas id="cardCanvas" width="768" height="1152"></canvas>
+    <br>
+    <a id="downloadLink" style="display:none;" download="EidCard.png">Download Your Card</a>
+
+    <script>
+        const canvas = document.getElementById('cardCanvas');
+        const ctx = canvas.getContext('2d');
+        const baseImage = new Image();
+        baseImage.src = 'Temporary_Eid_Card_Template.png';
+
+        function generateCard() {
+            const name = document.getElementById('nameInput').value;
+            if (!name) {
+                alert("Please enter your name.");
+                return;
+            }
+
+            baseImage.onload = function() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(baseImage, 0, 0);
+
+                ctx.font = 'bold 70px serif';
+                ctx.fillStyle = 'white';
+                ctx.textAlign = 'center';
+                ctx.fillText(name, canvas.width / 2, 1050);
+
+                const link = document.getElementById('downloadLink');
+                link.href = canvas.toDataURL();
+                link.style.display = 'inline-block';
+                link.innerText = "Download Your Card";
+            };
+
+            // If image already loaded (cache), force draw
+            if (baseImage.complete) {
+                baseImage.onload();
+            }
+        }
+    </script>
+</body>
+</html>
